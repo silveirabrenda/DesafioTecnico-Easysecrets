@@ -49,7 +49,7 @@ DESAFIOTECNICO-EASYSECRETS/
 │   ├── carrinho.steps.ts
 │   ├── login.steps.ts
 │   └── produto.steps.ts
-├── tests/                      # Testes em Playwright puro (abordagem complementar)
+├── tests/                      # Testes em Playwright puro
 │   ├── adicionar_produto.spec.ts
 │   ├── cadastro.spec.ts
 │   ├── finalizar_compra.spec.ts
@@ -150,7 +150,7 @@ A camada `pages/` concentra os elementos e ações da interface, reduzindo dupli
 * `features/`: descreve o comportamento esperado
 * `steps/`: faz a ponte entre Gherkin e automação
 * `pages/`: encapsula interações com a aplicação
-* `tests/`: alternativa complementar em Playwright puro
+* `tests/`: Playwright puro
 
 ---
 
