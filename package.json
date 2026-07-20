@@ -1,15 +1,29 @@
 {
   "name": "desafiotecnico-easysecrets",
   "version": "1.0.0",
-  "description": "",
+  "description": "Automação de testes com Playwright, TypeScript, POM e BDD para a aplicação DemoBlaze.",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test tests",
+    "test:bdd": "bddgen && playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "report": "playwright show-report"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/silveirabrenda/DesafioTecnico-Easysecrets.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "playwright",
+    "typescript",
+    "bdd",
+    "gherkin",
+    "cucumber",
+    "qa",
+    "automation"
+  ],
+  "author": "Brenda Silveira",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
@@ -20,6 +34,8 @@
     "@cucumber/cucumber": "^13.1.1",
     "@playwright/test": "^1.61.1",
     "@types/node": "^26.1.1",
-    "ts-node": "^10.9.2"
+    "playwright-bdd": "^9.2.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
   }
 }

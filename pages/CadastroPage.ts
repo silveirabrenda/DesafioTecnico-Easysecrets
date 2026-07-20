@@ -1,28 +1,36 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 
 export class CadastroPage {
   readonly page: Page;
-  readonly botaoCadastro: Locator;
-  readonly campoUsuario: Locator;
-  readonly campoSenha: Locator;
-  readonly botaoCadastrar: Locator;
 
   constructor(page: Page) {
     this.page = page;
-
-    this.botaoCadastro = page.locator('#signin2');
-    this.campoUsuario = page.locator('#sign-username');
-    this.campoSenha = page.locator('#sign-password');
-    this.botaoCadastrar = page.locator('button[onclick="register()"]');
   }
 
-  async abrirCadastro() {
-    await this.botaoCadastro.click();
+  async validarModalCadastroVisivel() {
+    await expect(this.page.locator('#signInModal')).toBeVisible();
   }
 
-  async cadastrar(usuario: string, senha: string) {
-    await this.campoUsuario.fill(usuario);
-    await this.campoSenha.fill(senha);
-    await this.botaoCadastrar.click();
+  async preencherUsuario(usuario: string) {
+    await this.page.fill('#sign-username', usuario);
+  }
+
+  async preencherSenha(senha: string) {
+    await this.page.fill('#sign-password', senha);
+  }
+
+  async confirmarCadastro(): Promise<string> {
+    const dialogPromise = this.page.waitForEvent('dialog');
+    await this.page.click('button[onclick="register()"]');
+    const dialog = await dialogPromise;
+    const mensagem = dialog.message();
+    await dialog.accept();
+    return mensagem;
+  }
+
+  async cadastrar(usuario: string, senha: string): Promise<string> {
+    await this.preencherUsuario(usuario);
+    await this.preencherSenha(senha);
+    return await this.confirmarCadastro();
   }
 }

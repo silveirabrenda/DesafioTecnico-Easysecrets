@@ -1,22 +1,25 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 
 export class HomePage {
-  readonly page: Page;
-  readonly produtoSamsung: Locator;
-  readonly categoriaCelular: Locator;
+  constructor(private page: Page) {}
 
-  constructor(page: Page) {
-    this.page = page;
-
-    this.produtoSamsung = page.locator('a.hrefch', {hasText:'Samsung galaxy s6'});
-    this.categoriaCelular = page.locator('#itemc', {hasText:'Phones'});
+  async acessarSite() {
+    await this.page.goto('/');
+    await expect(this.page.locator('#nava')).toBeVisible();
   }
 
-  async acessarCelulares() {
-    await this.categoriaCelular.click();
+  async abrirCadastro() {
+    await this.page.click('#signin2');
+    await expect(this.page.locator('#signInModal')).toBeVisible();
   }
 
-  async abrirProduto() {
-    await this.produtoSamsung.click();
+  async abrirLogin() {
+    await this.page.click('#login2');
+    await expect(this.page.locator('#logInModal')).toBeVisible();
+  }
+
+  async acessarCarrinho() {
+    await this.page.click('#cartur');
+    await this.page.waitForURL('**/cart.html');
   }
 }

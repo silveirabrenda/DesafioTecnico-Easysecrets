@@ -1,28 +1,42 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 
 export class LoginPage {
   readonly page: Page;
-  readonly botaoLogin: Locator;
-  readonly campoUsuario: Locator;
-  readonly campoSenha: Locator;
-  readonly botaoEntrar: Locator;
 
   constructor(page: Page) {
     this.page = page;
-
-    this.botaoLogin = page.locator('#login2');
-    this.campoUsuario = page.locator('#loginusername');
-    this.campoSenha = page.locator('#loginpassword');
-    this.botaoEntrar = page.locator('button[onclick="logIn()"]');
   }
 
-  async abrirLogin() {
-    await this.botaoLogin.click();
+  async validarModalLoginVisivel() {
+    await expect(this.page.locator('#logInModal')).toBeVisible();
+  }
+
+  async preencherUsuario(usuario: string) {
+    await this.page.fill('#loginusername', usuario);
+  }
+
+  async preencherSenha(senha: string) {
+    await this.page.fill('#loginpassword', senha);
+  }
+
+  async confirmarLogin() {
+    const responsePromise = this.page.waitForResponse(
+      (response) => response.url().includes('/login') && response.status() === 200
+    );
+
+    await this.page.click('button[onclick="logIn()"]');
+    await responsePromise;
   }
 
   async realizarLogin(usuario: string, senha: string) {
-    await this.campoUsuario.fill(usuario);
-    await this.campoSenha.fill(senha);
-    await this.botaoEntrar.click();
+    await this.preencherUsuario(usuario);
+    await this.preencherSenha(senha);
+    await this.confirmarLogin();
+  }
+
+  async validarLoginSucesso(usuario: string) {
+    const userElement = this.page.locator('#nameofuser');
+    await expect(userElement).toBeVisible({ timeout: 10000 });
+    await expect(userElement).toContainText(`Welcome ${usuario}`);
   }
 }
